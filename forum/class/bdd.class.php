@@ -55,6 +55,53 @@ class bdd{
             return 0;//User existant
         }  
     }
+
+    public function add($id,$nom,$content){
+        $sql = $this->link->prepare("SELECT count(id) AS A FROM post WHERE nom=?");
+        $sql->bind_param("s",$nom);
+        $sql->execute();
+        $res = $sql->get_result();
+        $temp= $res->fetch_assoc();
+        
+        if($temp['A']==0){
+            $sql = $this->link->prepare("INSERT INTO post(nom, content, createdBy) VALUES (?,?,?) ");
+            $sql->bind_param("sss", $nom,$content,$id);
+            $sql->execute();
+           
+            
+            $sql = $this->link->prepare("SELECT count(id) AS A FROM post WHERE nom=? ");
+            $sql->bind_param("s",$nom);
+            $sql->execute();
+            $res = $sql->get_result();
+            $temp= $res->fetch_assoc();
+            if($temp['A']==0){
+                return 1;
+            }
+            else{
+                return 2;
+            }           
+        }
+        else{
+            return 0;//User existant
+        }  
+    }
+
+
+    public function getAllPost(){
+        $tab=[];
+        $sql = $this->link->prepare("SELECT nom, content, createdBy FROM post");
+        $sql->execute();
+        $res = $sql->get_result();
+        while($row = mysqli_fetch_array($res)){     
+            array_push($tab, [ 'nom'=>$row['nom'], 'content'=>$row['content'], 'createdBy'=>$row['createdBy'] ] );
+        }
+        /*while ($res->fetch()) {
+            
+        }*/
+        return $tab;
+
+    }
+
     
 
 }
