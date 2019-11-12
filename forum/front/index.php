@@ -33,7 +33,7 @@
         </form>
         <br/>
         <h1>signinIn</h1>
-        <form action="./sign.php" method="POST" class="">
+        <form action="../back/sign.php" method="POST" class="">
             <div class="">
                 <label for="login">Enter your login: </label>
                 <input type="text" name="login"  required>

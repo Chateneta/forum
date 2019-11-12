@@ -1,4 +1,12 @@
+*{
+    color:rgb(49, 49, 49);
+}
 .post{
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+.oui a{
+    text-decoration:none;
+    color:rgb(49, 49, 49);
 }

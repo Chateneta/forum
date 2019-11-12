@@ -1,13 +1,13 @@
 <?php
-include('../class/bdd.class.php'); 
+
 include('../class/post.class.php'); 
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="./file.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href=".\file.css">
 </head>
 <body>
     <header class="bg-dark">
@@ -17,14 +17,8 @@ include('../class/post.class.php');
         </div>
     </header>
     <div class="container">
-        <div class="row d-flex justify-content-center align-items-center">
-            <div class="col-6 post">
-                <?php
-                    session_start();
-                    echo $_SESSION['MESS'];
-                ?>
-            </div>
-            <div class="col-6 post">
+        <div class="row justify-content-center align-items-center ">
+            <div class="post">
                 <form action="../back/add.php" method="post">
                     <div class="card">
                         <h5 class="card-header">
@@ -35,29 +29,44 @@ include('../class/post.class.php');
                                 <textarea class="form-control" rows="5" type="textarea" name="content" placeholder="Contenu du text"></textarea>
                             </p>
                             <input type="submit" class="btn btn-warning" value="Nouveaux"/>
+                            <?php
+                                session_start();
+                                echo $_SESSION['MESS'];
+                            ?>
                         </div>
                     </div>
                 </form>
+                
             </div>
+        </div>
             <?php
-            $db= new bdd("localhost","forum","root","");
-            $AllPost= $db->getAllPost();
-            $temp= new post('temp','temp')
-                for($i=0;$i<=count($AllPost)-1;$i++){
-                    $temp.affiche();
+        
+            $post= new post();
+            $rep=$post->getAllPost();
+            $i=0;
+            foreach ($rep as $row) {
+                
+                
+                if($i==0){
+                    echo "<div class='row justify-content-center align-items-center mb-3'>";
+                    echo $post->affiche($row['nom'], $row['content'], $row['createdBy'], $row['id']);
                 }
-            echo 
-           /* $db= new bdd("localhost","forum","root","");
-            $AllPost= $db->getAllPost();
-            for($i=0;$i<=count($AllPost)-1;$i++){
-                echo $AllPost[$i]['nom'];
-                echo $AllPost[$i]['content'];
-                echo $AllPost[$i]['createdBy'];
-            }*/
+                elseif($i%2){
+                    echo $post->affiche($row['nom'], $row['content'], $row['createdBy'], $row['id']);
+                    echo "</div>";
+                }
+                else{
+                    echo "<div class='row justify-content-center align-items-center mb-3'>";
+                    echo $post->affiche($row['nom'], $row['content'], $row['createdBy'], $row['id']);
+                }
+                $i++;
+                
+            }  
+           
            
             ?>
 
-        </div>
+        
     </div>
     
 </body>

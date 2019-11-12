@@ -1,10 +1,10 @@
 <?php
 
-include('../class/bdd.class.php');
+
 include('../class/user.class.php');
 
-$db= new bdd("localhost","forum","root","");
-$temp = $db->signin($_POST['login'], $_POST['pass'], $_POST['email']);
+$user = new user();
+$temp = $user->signin($_POST['login'], $_POST['pass'], $_POST['email']);
 
 
     if($temp=0){
@@ -14,11 +14,13 @@ $temp = $db->signin($_POST['login'], $_POST['pass'], $_POST['email']);
         
     }
     else{
-        $Utilisateur= new user($_POST['login'], $_POST['pass']); //Connecté
+        $user->login= $_POST['login'];
+        $user->pass= $_POST['pass'];
+        $user->id=$temp['id'];
         session_start();
-        $_SESSION['IDU']=$temp;
+        $_SESSION['IDU']=$temp['id'];
         $_SESSION['MESS']='Félicitation votre compte est créé et connecté !';
-        header("Location: ../front/index.php");;
+        header("Location: ../front/main.php");;
         
     }
 
