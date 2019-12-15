@@ -1,5 +1,5 @@
 <?php
-include('../class/bdd.class.php');
+require_once('bdd.class.php');
 
 class user{
     public $id;
@@ -10,8 +10,15 @@ class user{
 
     }
 
-    public function getId(){
-        return $this->id;
+    public function getLogin($id){
+        $db= new bdd("localhost","forum","root","");
+        $sql = $db->link->prepare("SELECT login FROM user WHERE id=?");
+        $sql->bind_param("i",$id);
+        $sql->execute();
+        $res = $sql->get_result();
+        $temp= $res->fetch_assoc();
+        return $temp['login'];
+
     }
 
     public function login($login,$pass){

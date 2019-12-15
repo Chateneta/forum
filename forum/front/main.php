@@ -1,6 +1,6 @@
 <?php
-
-include('../class/post.class.php'); 
+require_once('../class/user.class.php'); 
+require_once('../class/post.class.php'); 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,9 +10,9 @@ include('../class/post.class.php');
     <link rel="stylesheet" href=".\file.css">
 </head>
 <body>
-    <header class="bg-dark">
-        <div class="row d-flex align-items-center">
-            <div class="col-6 d-flex justify-content-start text-light">FORUM</div>
+    <header class="bg-dark container-fluid">
+        <div class="row align-items-center">
+            <div class="col-6 d-flex justify-content-start text-light"><a href='main.php'>FORUM</a></div>
             <div class="col-6 d-flex justify-content-end text-light">ICON</div>
         </div>
     </header>
@@ -44,20 +44,21 @@ include('../class/post.class.php');
             $post= new post();
             $rep=$post->getAllPost();
             $i=0;
+            $u=new user();
             foreach ($rep as $row) {
-                
+                $temp=$u->getLogin($row['createdBy']);
                 
                 if($i==0){
                     echo "<div class='row justify-content-center align-items-center mb-3'>";
-                    echo $post->affiche($row['nom'], $row['content'], $row['createdBy'], $row['id']);
+                    echo $post->affiche($row['nom'], $row['content'], $temp, $row['id']);
                 }
                 elseif($i%2){
-                    echo $post->affiche($row['nom'], $row['content'], $row['createdBy'], $row['id']);
+                    echo $post->affiche($row['nom'], $row['content'], $temp, $row['id']);
                     echo "</div>";
                 }
                 else{
                     echo "<div class='row justify-content-center align-items-center mb-3'>";
-                    echo $post->affiche($row['nom'], $row['content'], $row['createdBy'], $row['id']);
+                    echo $post->affiche($row['nom'], $row['content'], $temp, $row['id']);
                 }
                 $i++;
                 
